@@ -52,17 +52,18 @@
                     <p class="text-muted">{{ product.description }}</p>
                 </div>
 
-                <form>
+                {{ form_start(addToCartForm) }}
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="10" style="max-width: 100px;">
+                        {{ form_label(addToCartForm.quantity, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(addToCartForm.quantity) }}
+                        {{ form_errors(addToCartForm.quantity) }}
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex">
                         <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
                         <a href="{{ path('store_home') }}" class="btn btn-outline-secondary btn-lg">Continue Shopping</a>
                     </div>
-                </form>
+                {{ form_end(addToCartForm) }}
 
                 <div class="mt-4 pt-4 border-top">
                     <ul class="list-unstyled">

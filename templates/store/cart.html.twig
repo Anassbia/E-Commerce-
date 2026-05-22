@@ -29,6 +29,13 @@
     <div class="container my-5">
         <h1 class="mb-4">Shopping Cart</h1>
 
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
         <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-3">
@@ -45,69 +52,50 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="{{ asset('assets/images/store/thumbnail.png') }}" class="img-thumbnail me-3" alt="Product" style="width: 80px; height: 80px; object-fit: cover;">
-                                                <div>
-                                                    <h6 class="mb-0">Wireless Headphones</h6>
-                                                    <small class="text-muted">Color: Black</small>
+                                    {% for item in cart.cartItems %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ item.product.imageFilename ? asset('assets/images/store/' ~ item.product.imageFilename) : 'https://via.placeholder.com/80x80' }}" class="img-thumbnail me-3" alt="{{ item.product.name }}" style="width: 80px; height: 80px; object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ item.product.name }}</h6>
+                                                        <small class="text-muted">{{ item.product.category.name }}</small>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>$79.99</td>
-                                        <td>2</td>
-                                        <td class="fw-bold">$159.98</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="{{ asset('assets/images/store/thumbnail.png') }}" class="img-thumbnail me-3" alt="Product" style="width: 80px; height: 80px; object-fit: cover;">
-                                                <div>
-                                                    <h6 class="mb-0">Classic Leather Jacket</h6>
-                                                    <small class="text-muted">Size: M</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>$149.99</td>
-                                        <td>1</td>
-                                        <td class="fw-bold">$149.99</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="{{ asset('assets/images/store/thumbnail.png') }}" class="img-thumbnail me-3" alt="Product" style="width: 80px; height: 80px; object-fit: cover;">
-                                                <div>
-                                                    <h6 class="mb-0">Bluetooth Speaker</h6>
-                                                    <small class="text-muted">Color: Blue</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>$59.99</td>
-                                        <td>1</td>
-                                        <td class="fw-bold">$59.99</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>${{ item.price|number_format(2, '.', ',') }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td class="fw-bold">${{ item.lineTotal|number_format(2, '.', ',') }}</td>
+                                            <td>
+                                                <form action="{{ path('store_cart_remove', {id: item.product.id}) }}" method="post">
+                                                    <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">Your cart is empty.</td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <a href="{{ path('store_home') }}" class="btn btn-outline-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
-                    Continue Shopping
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ path('store_home') }}" class="btn btn-outline-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                        </svg>
+                        Continue Shopping
+                    </a>
+                    {% if cart.cartItems is not empty %}
+                        <form action="{{ path('store_cart_clear') }}" method="post">
+                            <button class="btn btn-outline-danger" type="submit">Clear Cart</button>
+                        </form>
+                    {% endif %}
+                </div>
             </div>
 
             <div class="col-lg-4">
@@ -118,23 +106,23 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <span>$369.96</span>
+                            <span>${{ cart.total|number_format(2, '.', ',') }}</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
-                            <span>$10.00</span>
+                            <span>$0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Tax:</span>
-                            <span>$30.40</span>
+                            <span>$0.00</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-success">$410.36</strong>
+                            <strong class="text-success">${{ cart.total|number_format(2, '.', ',') }}</strong>
                         </div>
                         <div class="d-grid">
-                            <button class="btn btn-success btn-lg">Proceed to Checkout</button>
+                            <button class="btn btn-success btn-lg" {% if cart.cartItems is empty %}disabled{% endif %}>Proceed to Checkout</button>
                         </div>
                     </div>
                 </div>
