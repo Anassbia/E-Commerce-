@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details - Our Store</title>
+    <title>{{ product.name }} - Our Store</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -29,32 +29,27 @@
     <div class="container my-5">
         <div class="row">
             <div class="col-md-6">
-                <img src="{{ asset('assets/images/store/airbod.png') }}" class="img-fluid rounded" alt="Product">
+                <img src="{{ product.imageFilename ? asset('assets/images/store/' ~ product.imageFilename) : 'https://via.placeholder.com/700x520' }}" class="img-fluid rounded" alt="{{ product.name }}">
             </div>
 
             <div class="col-md-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ path('store_home') }}" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('store_products_by_category', {slug: product.category.slug}) }}" class="text-decoration-none">{{ product.category.name }}</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Product Details</li>
                     </ol>
                 </nav>
 
-                <span class="badge bg-primary mb-3">Electronics</span>
+                <span class="badge bg-primary mb-3">{{ product.category.name }}</span>
 
-                <h1 class="mb-3">Wireless Headphones</h1>
+                <h1 class="mb-3">{{ product.name }}</h1>
 
-                <h3 class="text-success mb-4">$79.99</h3>
+                <h3 class="text-success mb-4">${{ product.price|number_format(2, '.', ',') }}</h3>
 
                 <div class="mb-4">
                     <h5>Description</h5>
-                    <p class="text-muted">
-                        Experience premium sound quality with our wireless headphones.
-                        Featuring advanced noise cancellation technology, comfortable over-ear design,
-                        and up to 30 hours of battery life. Perfect for music lovers, travelers, and professionals.
-                        The foldable design makes them easy to carry, while the premium materials ensure durability
-                        and long-lasting comfort.
-                    </p>
+                    <p class="text-muted">{{ product.description }}</p>
                 </div>
 
                 <form>
@@ -71,9 +66,9 @@
 
                 <div class="mt-4 pt-4 border-top">
                     <ul class="list-unstyled">
-                        <li class="mb-2"><strong>SKU:</strong> WH-2024-001</li>
-                        <li class="mb-2"><strong>Availability:</strong> <span class="text-success">In Stock</span></li>
-                        <li class="mb-2"><strong>Category:</strong> Electronics</li>
+                        <li class="mb-2"><strong>SKU:</strong> {{ product.sku }}</li>
+                        <li class="mb-2"><strong>Availability:</strong> <span class="{{ product.inStock ? 'text-success' : 'text-danger' }}">{{ product.inStock ? 'In Stock' : 'Out of Stock' }}</span></li>
+                        <li class="mb-2"><strong>Category:</strong> {{ product.category.name }}</li>
                     </ul>
                 </div>
             </div>

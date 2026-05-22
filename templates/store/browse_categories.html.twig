@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    {% set badgeClasses = ['bg-primary', 'bg-warning', 'bg-success', 'bg-info', 'bg-danger', 'bg-secondary', 'bg-primary', 'bg-dark', 'bg-warning'] %}
+    {% set buttonClasses = ['btn-outline-primary', 'btn-outline-warning', 'btn-outline-success', 'btn-outline-info', 'btn-outline-danger', 'btn-outline-secondary', 'btn-outline-primary', 'btn-outline-dark', 'btn-outline-warning'] %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ path('store_categories') }}">Our Store</a>
@@ -55,96 +57,18 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-primary mb-2">12 Products</span>
-                        <h4 class="card-title">Electronics</h4>
-                        <p class="card-text text-muted">Headphones, speakers, gadgets and more</p>
-                        <a href="{{ path('store_products_by_category', {category: 'electronics'}) }}" class="btn btn-outline-primary">Browse Electronics</a>
+            {% for category in categories %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <span class="badge {{ badgeClasses[loop.index0 % badgeClasses|length] }} mb-2">{{ category.products|length }} Products</span>
+                            <h4 class="card-title">{{ category.name }}</h4>
+                            <p class="card-text text-muted">{{ category.description }}</p>
+                            <a href="{{ path('store_products_by_category', {slug: category.slug}) }}" class="btn {{ buttonClasses[loop.index0 % buttonClasses|length] }}">Browse {{ category.name }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-warning mb-2">18 Products</span>
-                        <h4 class="card-title">Fashion</h4>
-                        <p class="card-text text-muted">Clothing, accessories and footwear</p>
-                        <a href="{{ path('store_products_by_category', {category: 'fashion'}) }}" class="btn btn-outline-warning">Browse Fashion</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-success mb-2">15 Products</span>
-                        <h4 class="card-title">Home &amp; Garden</h4>
-                        <p class="card-text text-muted">Furniture, decor and gardening tools</p>
-                        <a href="{{ path('store_products_by_category', {category: 'home-garden'}) }}" class="btn btn-outline-success">Browse Home &amp; Garden</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-info mb-2">10 Products</span>
-                        <h4 class="card-title">Sports &amp; Fitness</h4>
-                        <p class="card-text text-muted">Workout gear, yoga mats and equipment</p>
-                        <a href="{{ path('store_products_by_category', {category: 'sports'}) }}" class="btn btn-outline-info">Browse Sports</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-danger mb-2">8 Products</span>
-                        <h4 class="card-title">Books</h4>
-                        <p class="card-text text-muted">Fiction, non-fiction and educational</p>
-                        <a href="{{ path('store_products_by_category', {category: 'books'}) }}" class="btn btn-outline-danger">Browse Books</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-secondary mb-2">14 Products</span>
-                        <h4 class="card-title">Beauty &amp; Health</h4>
-                        <p class="card-text text-muted">Skincare, cosmetics and wellness</p>
-                        <a href="{{ path('store_products_by_category', {category: 'beauty'}) }}" class="btn btn-outline-secondary">Browse Beauty</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-primary mb-2">20 Products</span>
-                        <h4 class="card-title">Toys &amp; Games</h4>
-                        <p class="card-text text-muted">Fun for kids and family entertainment</p>
-                        <a href="{{ path('store_products_by_category', {category: 'toys'}) }}" class="btn btn-outline-primary">Browse Toys</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-dark mb-2">9 Products</span>
-                        <h4 class="card-title">Automotive</h4>
-                        <p class="card-text text-muted">Car accessories and maintenance tools</p>
-                        <a href="{{ path('store_products_by_category', {category: 'automotive'}) }}" class="btn btn-outline-dark">Browse Automotive</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <span class="badge bg-warning mb-2">11 Products</span>
-                        <h4 class="card-title">Pet Supplies</h4>
-                        <p class="card-text text-muted">Food, toys and accessories for pets</p>
-                        <a href="{{ path('store_products_by_category', {category: 'pets'}) }}" class="btn btn-outline-warning">Browse Pet Supplies</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
