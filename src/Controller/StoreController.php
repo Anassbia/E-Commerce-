@@ -24,12 +24,6 @@ final class StoreController extends AbstractController
         return $this->render('store/index.html.twig');
     }
 
-    #[Route('/login', name: 'store_login')]
-    public function login(): Response
-    {
-        return $this->render('store/login.html.twig');
-    }
-
     #[Route('/profile', name: 'store_profile')]
     public function profile(): Response
     {

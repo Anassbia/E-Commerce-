@@ -21,9 +21,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('store_cart') }}">Cart</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('store_profile') }}">Profile</a>
-                    </li>
+                    {% include 'store/_auth_nav_links.html.twig' %}
                 </ul>
             </div>
         </div>
@@ -35,14 +33,14 @@
                 <div class="card">
                     <div class="card-body text-center">
                         <img src="{{ asset('assets/images/store/profile.png') }}" class="rounded-circle mb-3" alt="User Avatar" width="150" height="150">
-                        <h5 class="card-title">John Doe</h5>
-                        <p class="text-muted">john.doe@email.com</p>
+                        <h5 class="card-title">{{ app.user.fullName }}</h5>
+                        <p class="text-muted">{{ app.user.email }}</p>
                         <hr>
                         <ul class="list-unstyled">
                             <li class="mb-2"><a href="#profile" class="text-decoration-none">Profile Information</a></li>
                             <li class="mb-2"><a href="#orders" class="text-decoration-none">My Orders</a></li>
                             <li class="mb-2"><a href="#" class="text-decoration-none">Settings</a></li>
-                            <li class="mb-2"><a href="{{ path('store_login') }}" class="text-decoration-none text-danger">Logout</a></li>
+                            <li class="mb-2"><a href="{{ path('store_logout') }}" class="text-decoration-none text-danger">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -57,27 +55,27 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="fw-bold">Full Name:</label>
-                                <p>John Doe</p>
+                                <p>{{ app.user.fullName }}</p>
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bold">Email:</label>
-                                <p>john.doe@email.com</p>
+                                <p>{{ app.user.email }}</p>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="fw-bold">Phone:</label>
-                                <p>+1 (555) 123-4567</p>
+                                <p>Not provided</p>
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bold">Member Since:</label>
-                                <p>January 15, 2024</p>
+                                <p>{{ app.user.createdAt|date('F d, Y') }}</p>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label class="fw-bold">Shipping Address:</label>
-                                <p>123 Main Street, Apt 4B<br>New York, NY 10001<br>United States</p>
+                                <p>Not provided in this training step.</p>
                             </div>
                         </div>
                         <button class="btn btn-outline-primary">Edit Profile</button>
@@ -89,108 +87,9 @@
                         <h5 class="mb-0">Order History</h5>
                     </div>
                     <div class="card-body">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h6 class="card-title">Order #ORD-2024-001</h6>
-                                        <p class="text-muted mb-2">Placed on: February 10, 2024</p>
-                                        <p class="mb-1"><strong>Items:</strong> Wireless Headphones, Bluetooth Speaker</p>
-                                        <p class="mb-0"><strong>Total:</strong> $139.98</p>
-                                    </div>
-                                    <div class="col-md-4 text-md-end">
-                                        <span class="badge bg-success mb-2">Delivered</span>
-                                        <br>
-                                        <a href="#" class="btn btn-sm btn-outline-primary mt-2">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="alert alert-secondary mb-0">
+                            No order history is available in this training step yet.
                         </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h6 class="card-title">Order #ORD-2024-002</h6>
-                                        <p class="text-muted mb-2">Placed on: February 5, 2024</p>
-                                        <p class="mb-1"><strong>Items:</strong> Classic Leather Jacket</p>
-                                        <p class="mb-0"><strong>Total:</strong> $149.99</p>
-                                    </div>
-                                    <div class="col-md-4 text-md-end">
-                                        <span class="badge bg-info mb-2">In Transit</span>
-                                        <br>
-                                        <a href="#" class="btn btn-sm btn-outline-primary mt-2">Track Order</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h6 class="card-title">Order #ORD-2024-003</h6>
-                                        <p class="text-muted mb-2">Placed on: January 28, 2024</p>
-                                        <p class="mb-1"><strong>Items:</strong> Yoga Mat, Smart Plant Sensor</p>
-                                        <p class="mb-0"><strong>Total:</strong> $64.98</p>
-                                    </div>
-                                    <div class="col-md-4 text-md-end">
-                                        <span class="badge bg-warning mb-2">Processing</span>
-                                        <br>
-                                        <a href="#" class="btn btn-sm btn-outline-primary mt-2">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h6 class="card-title">Order #ORD-2024-004</h6>
-                                        <p class="text-muted mb-2">Placed on: January 20, 2024</p>
-                                        <p class="mb-1"><strong>Items:</strong> Web Development Guide</p>
-                                        <p class="mb-0"><strong>Total:</strong> $24.99</p>
-                                    </div>
-                                    <div class="col-md-4 text-md-end">
-                                        <span class="badge bg-danger mb-2">Cancelled</span>
-                                        <br>
-                                        <a href="#" class="btn btn-sm btn-outline-secondary mt-2">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h6 class="card-title">Order #ORD-2024-005</h6>
-                                        <p class="text-muted mb-2">Placed on: January 15, 2024</p>
-                                        <p class="mb-1"><strong>Items:</strong> Mechanical Keyboard, Wireless Mouse</p>
-                                        <p class="mb-0"><strong>Total:</strong> $119.98</p>
-                                    </div>
-                                    <div class="col-md-4 text-md-end">
-                                        <span class="badge bg-success mb-2">Delivered</span>
-                                        <br>
-                                        <a href="#" class="btn btn-sm btn-outline-primary mt-2">Buy Again</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <nav aria-label="Order pagination">
-                            <ul class="pagination justify-content-center mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </div>
